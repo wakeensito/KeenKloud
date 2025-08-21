@@ -585,7 +585,7 @@
 
   let tickers = [];
   let i = 0;
-  const ROTATE_MS = 5000;     // switch ticker every 5s
+  const ROTATE_MS = 20000;     // switch ticker every 20s
   const REFRESH_MS = 180000;  // fetch new data every 3 min
 
   function render() {
@@ -624,21 +624,27 @@
 .market-pill{
   display:flex; align-items:center; gap:8px;
   padding:6px 10px; border-radius:999px;
-  background:rgba(255,255,255,.08); color:#fff;
+  background:rgba(0,123,255,.15);
+  color:#007bff;
   font-size:.9rem; line-height:1;
   backdrop-filter:saturate(120%) blur(6px);
 }
+
 .market-pill .dot{
-  width:8px; height:8px; border-radius:50%; background:#2ecc71;
-  box-shadow:0 0 0 0 rgba(46,204,113,.7); animation:pulse 2s infinite;
+  width:8px; height:8px; border-radius:50%;
+  background:#007bff;
+  box-shadow:0 0 0 0 rgba(0,123,255,.6);
+  animation:pulse 2s infinite;
 }
+
 @keyframes pulse{
-  0%{ box-shadow:0 0 0 0 rgba(46,204,113,.7); }
-  70%{ box-shadow:0 0 0 10px rgba(46,204,113,0); }
-  100%{ box-shadow:0 0 0 0 rgba(46,204,113,0); }
+  0%{ box-shadow:0 0 0 0 rgba(0,123,255,.6); }
+  70%{ box-shadow:0 0 0 10px rgba(0,123,255,0); }
+  100%{ box-shadow:0 0 0 0 rgba(0,123,255,0); }
 }
-.chg.up{ color:#2ecc71; }
-.chg.down{ color:#e74c3c; }
+
+.chg.up{ color:#007bff; }
+.chg.down{ color:#007bff; }
 
 /* ✅ Instead of hiding on small screens, just shrink it */
 @media (max-width: 575.98px){
