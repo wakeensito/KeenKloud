@@ -7,6 +7,82 @@
   <title>KeenKloud</title>
   <meta name="description" content="">
   <meta name="keywords" content="">
+  <!-- Market Watch pill (loops through all tickers) -->
+<a class="market-pill" href="/projects/market-pipeline.html" title="How this is automated on AWS">
+  <span class="dot" aria-hidden="true"></span>
+  <span id="mk-sym">—</span>
+  <span id="mk-px">$—</span>
+  <span id="mk-chg" class="chg">—%</span>
+</a>
+
+<script>
+(function(){
+  const PILL = document.querySelector('.market-pill');
+  const EL_SYM = document.getElementById('mk-sym');
+  const EL_PX  = document.getElementById('mk-px');
+  const EL_CHG = document.getElementById('mk-chg');
+
+  let tickers = [];
+  let i = 0;
+  const ROTATE_MS = 5000;   // switch symbol every 5s
+  const REFRESH_MS = 180000; // re-fetch JSON every 3 min
+
+  function render() {
+    if (!tickers.length) return;
+    const t = tickers[i % tickers.length];
+    EL_SYM.textContent = t.symbol;
+    EL_PX.textContent  = '$' + Number(t.price).toFixed(2);
+    EL_CHG.textContent = (t.change_pct >= 0 ? '+' : '') + Number(t.change_pct).toFixed(2) + '%';
+    EL_CHG.classList.toggle('up',   t.change_pct >= 0);
+    EL_CHG.classList.toggle('down', t.change_pct <  0);
+    i++;
+  }
+
+  async function loadMarket(){
+    try{
+      const res = await fetch('https://keenkloud.net/market/current.json', { cache: 'no-cache' });
+      const data = await res.json();
+      if (Array.isArray(data.tickers) && data.tickers.length) {
+        tickers = data.tickers;
+        i = 0; // restart rotation on new data
+        render();
+      }
+    }catch(e){
+      // keep quiet if fetch fails; pill will keep last good data
+      console.error('market fetch failed', e);
+    }
+  }
+
+  // initial load + schedules
+  loadMarket();
+  setInterval(loadMarket, REFRESH_MS); // refresh data
+  setInterval(render, ROTATE_MS);      // rotate display
+})();
+</script>
+
+<style>
+.market-pill{
+  display:flex; align-items:center; gap:8px;
+  padding:6px 10px; border-radius:999px;
+  background:rgba(255,255,255,.08); color:#fff; text-decoration:none;
+  backdrop-filter:saturate(120%) blur(6px);
+  font-size:.9rem;
+}
+.market-pill:hover{ background:rgba(255,255,255,.14); }
+.dot{
+  width:8px; height:8px; border-radius:50%; background:#2ecc71;
+  box-shadow:0 0 0 0 rgba(46,204,113,.7); animation:pulse 2s infinite;
+}
+@keyframes pulse{
+  0%{ box-shadow:0 0 0 0 rgba(46,204,113,.7); }
+  70%{ box-shadow:0 0 0 10px rgba(46,204,113,0); }
+  100%{ box-shadow:0 0 0 0 rgba(46,204,113,0); }
+}
+.chg.up{ color:#2ecc71; } .chg.down{ color:#e74c3c; }
+@media (max-width: 420px){ .market-pill{ display:none; } }
+</style>
+
+<!-- Market Watch pill (loops through all tickers end) -->
 
   <!-- Favicons -->
   <link href="assets/img/favicon.png?v=2" rel="icon">
