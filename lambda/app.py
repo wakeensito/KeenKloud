@@ -5,7 +5,7 @@ s3 = boto3.client("s3")
 
 BUCKET   = os.environ["BUCKET"]
 API_KEY  = os.environ["API_KEY"]
-SYMBOLS  = [s.strip() for s in os.environ.get("SYMBOLS", "NVDA,AMZN,QQQ,CRWD").split(",")]
+SYMBOLS  = [s.strip() for s in os.environ.get("SYMBOLS", "QQQ,CRWD,NVDA,AMZN").split(",")]
 BASE_URL = "https://www.alphavantage.co/query"
 
 def fetch_quote(symbol: str):
