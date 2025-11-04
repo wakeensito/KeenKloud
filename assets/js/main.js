@@ -22,6 +22,62 @@
   document.addEventListener('scroll', toggleScrolled);
   window.addEventListener('load', toggleScrolled);
 
+  /**
+   * Mobile nav toggle
+   */
+  let mobileNavToggleBtn;
+  
+  function initMobileNav() {
+    mobileNavToggleBtn = document.querySelector('.mobile-nav-toggle');
+    
+    if (mobileNavToggleBtn) {
+      function mobileNavToogle(e) {
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        const body = document.querySelector('body');
+        const isActive = body.classList.contains('mobile-nav-active');
+        
+        body.classList.toggle('mobile-nav-active');
+        
+        if (mobileNavToggleBtn) {
+          const icon = mobileNavToggleBtn.querySelector('i') || mobileNavToggleBtn;
+          if (isActive) {
+            icon.classList.remove('bi-x');
+            icon.classList.add('bi-list');
+          } else {
+            icon.classList.remove('bi-list');
+            icon.classList.add('bi-x');
+          }
+        }
+      }
+      
+      mobileNavToggleBtn.addEventListener('click', mobileNavToogle);
+      console.log('Mobile nav toggle initialized');
+    } else {
+      console.log('Mobile nav toggle button not found');
+    }
+  }
+  
+  // Initialize on DOM ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMobileNav);
+  } else {
+    initMobileNav();
+  }
+
+  /**
+   * Hide mobile nav on same-page/hash links
+   */
+  document.querySelectorAll('#navmenu a').forEach(navmenu => {
+    navmenu.addEventListener('click', () => {
+      if (document.querySelector('.mobile-nav-active')) {
+        mobileNavToogle();
+      }
+    });
+
+  });
 
   /**
    * Toggle mobile nav dropdowns

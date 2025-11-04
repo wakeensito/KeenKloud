@@ -341,26 +341,234 @@ h6 {
   }
 }
 
-/* Mobile Navigation - Always visible */
+/* Mobile Navigation */
 @media (max-width: 1199px) {
-  .navmenu ul {
-    display: flex !important;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 10px;
-    list-style: none;
+  .mobile-nav-toggle {
+    color: var(--nav-color);
+    font-size: 28px;
+    line-height: 0;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: color 0.3s;
+    z-index: 9999;
+    position: relative;
+    pointer-events: auto;
+  }
+
+  .navmenu {
     padding: 0;
-    margin: 0;
+    z-index: 9997;
   }
 
-  .navmenu ul li {
+  .navmenu ul {
+    display: none !important;
+    list-style: none;
+    position: absolute;
+    inset: 80px 20px 20px 20px;
+    padding: 20px 0;
     margin: 0;
+    border-radius: 12px;
+    background-color: rgba(33, 37, 41, 0.98);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
+    transition: 0.3s;
+    z-index: 99998;
   }
 
-  .navmenu a {
-    padding: 8px 12px;
-    font-size: 14px;
+  .navmenu a,
+  .navmenu a:focus {
+    color: #ffffff !important;
+    padding: 10px 20px;
+    font-family: var(--nav-font);
+    font-size: 17px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     white-space: nowrap;
+    transition: 0.3s;
+  }
+  
+  .navmenu a:hover,
+  .navmenu a:focus {
+    color: #007bff !important;
+  }
+  
+  .navmenu a.active {
+    color: #007bff !important;
+  }
+
+  .navmenu a i,
+  .navmenu a:focus i {
+    font-size: 12px;
+    line-height: 0;
+    margin-left: 5px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: 0.3s;
+    background-color: color-mix(in srgb, var(--accent-color), transparent 90%);
+  }
+
+  .navmenu a i:hover,
+  .navmenu a:focus i:hover {
+    background-color: var(--accent-color);
+    color: var(--contrast-color);
+  }
+
+  .navmenu a:hover,
+  .navmenu .active,
+  .navmenu .active:focus {
+    color: var(--nav-dropdown-hover-color);
+  }
+
+  .navmenu .active i,
+  .navmenu .active:focus i {
+    background-color: var(--accent-color);
+    color: var(--contrast-color);
+    transform: rotate(180deg);
+  }
+
+  .navmenu .dropdown ul {
+    position: static;
+    display: none;
+    z-index: 99;
+    padding: 10px 0;
+    margin: 10px 20px;
+    background-color: var(--nav-dropdown-background-color);
+    transition: all 0.5s ease-in-out;
+  }
+
+  .navmenu .dropdown ul ul {
+    background-color: rgba(33, 37, 41, 0.1);
+  }
+
+  .navmenu .dropdown>.dropdown-active {
+    display: block;
+    background-color: rgba(33, 37, 41, 0.03);
+  }
+
+  .mobile-nav-active {
+    overflow: hidden;
+  }
+
+  .mobile-nav-active .mobile-nav-toggle {
+    color: #fff;
+    position: absolute;
+    font-size: 32px;
+    top: 15px;
+    right: 15px;
+    margin-right: 0;
+    z-index: 9999;
+  }
+
+  .mobile-nav-active .navmenu {
+    position: fixed !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 280px !important;
+    max-width: 85vw !important;
+    height: 100vh !important;
+    overflow-y: auto !important;
+    background: rgba(0, 0, 0, 0.98) !important;
+    transition: transform 0.3s ease !important;
+    backdrop-filter: none !important;
+    z-index: 99999 !important;
+    padding: 0 !important;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.5) !important;
+  }
+  
+  .mobile-nav-active .navmenu .mobile-nav-toggle {
+    pointer-events: auto !important;
+    z-index: 999999 !important;
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    color: #ffffff !important;
+    cursor: pointer !important;
+    font-size: 32px !important;
+    font-weight: bold !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+    padding: 10px !important;
+    border-radius: 8px !important;
+    width: 44px !important;
+    height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+  }
+  
+  .mobile-nav-active .navmenu .mobile-nav-toggle:hover {
+    background: rgba(255, 255, 255, 0.3) !important;
+    border-color: rgba(255, 255, 255, 0.5) !important;
+  }
+  
+  .mobile-nav-active .navmenu .mobile-nav-toggle i {
+    color: #ffffff !important;
+    font-weight: bold !important;
+  }
+
+  .mobile-nav-active .navmenu>ul {
+    display: flex !important;
+    flex-direction: column !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    z-index: 999998 !important;
+    top: 80px !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: auto !important;
+    width: 100% !important;
+    padding: 20px !important;
+    margin: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    filter: none !important;
+    -webkit-filter: none !important;
+  }
+  
+  .mobile-nav-active .navmenu>ul>li {
+    width: 100% !important;
+    padding: 15px 0 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+  
+  .mobile-nav-active .navmenu>ul>li:last-child {
+    border-bottom: none !important;
+  }
+  
+  /* Add overlay background behind menu */
+  body.mobile-nav-active::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99998;
+    backdrop-filter: none !important;
+  }
+  
+  /* Ensure mobile nav overlay is above everything */
+  body.mobile-nav-active .hero,
+  body.mobile-nav-active .hero img,
+  body.mobile-nav-active .main > section {
+    z-index: 1;
+    filter: none !important;
+    -webkit-filter: none !important;
   }
 }
 
