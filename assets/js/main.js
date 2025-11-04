@@ -27,33 +27,51 @@
    */
   let mobileNavToggleBtn;
   
+  function closeMobileNav() {
+    const body = document.querySelector('body');
+    if (body.classList.contains('mobile-nav-active')) {
+      body.classList.remove('mobile-nav-active');
+      if (mobileNavToggleBtn) {
+        const icon = mobileNavToggleBtn.querySelector('i') || mobileNavToggleBtn;
+        icon.classList.remove('bi-x');
+        icon.classList.add('bi-list');
+      }
+    }
+  }
+  
+  function toggleMobileNav(e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+    }
+    const body = document.querySelector('body');
+    const isActive = body.classList.contains('mobile-nav-active');
+    
+    body.classList.toggle('mobile-nav-active');
+    
+    if (mobileNavToggleBtn) {
+      const icon = mobileNavToggleBtn.querySelector('i') || mobileNavToggleBtn;
+      if (isActive) {
+        icon.classList.remove('bi-x');
+        icon.classList.add('bi-list');
+      } else {
+        icon.classList.remove('bi-list');
+        icon.classList.add('bi-x');
+      }
+    }
+  }
+  
   function initMobileNav() {
     mobileNavToggleBtn = document.querySelector('.mobile-nav-toggle');
     
     if (mobileNavToggleBtn) {
-      function mobileNavToogle(e) {
-        if (e) {
-          e.preventDefault();
-          e.stopPropagation();
-        }
-        const body = document.querySelector('body');
-        const isActive = body.classList.contains('mobile-nav-active');
-        
-        body.classList.toggle('mobile-nav-active');
-        
-        if (mobileNavToggleBtn) {
-          const icon = mobileNavToggleBtn.querySelector('i') || mobileNavToggleBtn;
-          if (isActive) {
-            icon.classList.remove('bi-x');
-            icon.classList.add('bi-list');
-          } else {
-            icon.classList.remove('bi-list');
-            icon.classList.add('bi-x');
-          }
-        }
-      }
-      
-      mobileNavToggleBtn.addEventListener('click', mobileNavToogle);
+      // Add both click and touchstart for mobile
+      mobileNavToggleBtn.addEventListener('click', toggleMobileNav, true);
+      mobileNavToggleBtn.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        toggleMobileNav(e);
+      }, {passive: false, capture: true});
       console.log('Mobile nav toggle initialized');
     } else {
       console.log('Mobile nav toggle button not found');
@@ -68,16 +86,48 @@
   }
 
   /**
-   * Hide mobile nav on same-page/hash links
+   * Hide mobile nav when clicking nav links
    */
-  document.querySelectorAll('#navmenu a').forEach(navmenu => {
-    navmenu.addEventListener('click', () => {
-      if (document.querySelector('.mobile-nav-active')) {
-        mobileNavToogle();
-      }
+  function setupNavLinks() {
+    document.querySelectorAll('#navmenu a').forEach(link => {
+      // Add click handler to close menu after navigation
+      link.addEventListener('click', function(e) {
+        // Allow navigation to happen, then close menu
+        setTimeout(() => {
+          if (document.body.classList.contains('mobile-nav-active')) {
+            closeMobileNav();
+          }
+        }, 200);
+      }, true);
     });
-
-  });
+  }
+  
+  // Setup nav links after DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupNavLinks);
+  } else {
+    setupNavLinks();
+  }
+  
+  /**
+   * Close mobile nav when clicking overlay or outside menu
+   */
+  document.addEventListener('click', function(e) {
+    if (document.body.classList.contains('mobile-nav-active')) {
+      const navmenu = document.querySelector('.navmenu');
+      const toggle = document.querySelector('.mobile-nav-toggle');
+      
+      // Check if click is on toggle button
+      if (toggle && (toggle === e.target || toggle.contains(e.target))) {
+        return; // Let toggle handler manage it
+      }
+      
+      // Close if clicking outside the menu
+      if (navmenu && !navmenu.contains(e.target)) {
+        closeMobileNav();
+      }
+    }
+  }, true);
 
   /**
    * Toggle mobile nav dropdowns
