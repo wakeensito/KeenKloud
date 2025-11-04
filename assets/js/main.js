@@ -42,12 +42,13 @@
         body.classList.toggle('mobile-nav-active');
         
         if (mobileNavToggleBtn) {
+          const icon = mobileNavToggleBtn.querySelector('i') || mobileNavToggleBtn;
           if (isActive) {
-            mobileNavToggleBtn.classList.remove('bi-x');
-            mobileNavToggleBtn.classList.add('bi-list');
+            icon.classList.remove('bi-x');
+            icon.classList.add('bi-list');
           } else {
-            mobileNavToggleBtn.classList.remove('bi-list');
-            mobileNavToggleBtn.classList.add('bi-x');
+            icon.classList.remove('bi-list');
+            icon.classList.add('bi-x');
           }
         }
       }
