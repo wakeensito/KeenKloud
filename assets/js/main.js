@@ -32,31 +32,28 @@
     
     if (mobileNavToggleBtn) {
       function mobileNavToogle(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        
-        const body = document.body;
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        const body = document.querySelector('body');
         const isActive = body.classList.contains('mobile-nav-active');
         
         body.classList.toggle('mobile-nav-active');
         
         if (mobileNavToggleBtn) {
-          const icon = mobileNavToggleBtn.querySelector('i');
-          if (icon) {
-            if (isActive) {
-              icon.classList.remove('bi-x');
-              icon.classList.add('bi-list');
-            } else {
-              icon.classList.remove('bi-list');
-              icon.classList.add('bi-x');
-            }
+          const icon = mobileNavToggleBtn.querySelector('i') || mobileNavToggleBtn;
+          if (isActive) {
+            icon.classList.remove('bi-x');
+            icon.classList.add('bi-list');
+          } else {
+            icon.classList.remove('bi-list');
+            icon.classList.add('bi-x');
           }
         }
       }
       
-      // Use capture phase to ensure it fires
-      mobileNavToggleBtn.addEventListener('click', mobileNavToogle, true);
+      mobileNavToggleBtn.addEventListener('click', mobileNavToogle);
       console.log('Mobile nav toggle initialized');
     } else {
       console.log('Mobile nav toggle button not found');
@@ -74,17 +71,12 @@
    * Hide mobile nav on same-page/hash links
    */
   document.querySelectorAll('#navmenu a').forEach(navmenu => {
-    navmenu.addEventListener('click', function(e) {
-      if (document.body.classList.contains('mobile-nav-active')) {
-        const body = document.querySelector('body');
-        body.classList.remove('mobile-nav-active');
-        if (mobileNavToggleBtn) {
-          const icon = mobileNavToggleBtn.querySelector('i') || mobileNavToggleBtn;
-          icon.classList.remove('bi-x');
-          icon.classList.add('bi-list');
-        }
+    navmenu.addEventListener('click', () => {
+      if (document.querySelector('.mobile-nav-active')) {
+        mobileNavToogle();
       }
     });
+
   });
 
   /**
