@@ -39,26 +39,28 @@
     }
   }
   
+  function openMobileNav() {
+    const body = document.querySelector('body');
+    if (!body.classList.contains('mobile-nav-active')) {
+      body.classList.add('mobile-nav-active');
+      if (mobileNavToggleBtn) {
+        const icon = mobileNavToggleBtn.querySelector('i') || mobileNavToggleBtn;
+        icon.classList.remove('bi-list');
+        icon.classList.add('bi-x');
+      }
+    }
+  }
+  
   function toggleMobileNav(e) {
     if (e) {
       e.preventDefault();
       e.stopPropagation();
-      e.stopImmediatePropagation();
     }
     const body = document.querySelector('body');
-    const isActive = body.classList.contains('mobile-nav-active');
-    
-    body.classList.toggle('mobile-nav-active');
-    
-    if (mobileNavToggleBtn) {
-      const icon = mobileNavToggleBtn.querySelector('i') || mobileNavToggleBtn;
-      if (isActive) {
-        icon.classList.remove('bi-x');
-        icon.classList.add('bi-list');
-      } else {
-        icon.classList.remove('bi-list');
-        icon.classList.add('bi-x');
-      }
+    if (body.classList.contains('mobile-nav-active')) {
+      closeMobileNav();
+    } else {
+      openMobileNav();
     }
   }
   
@@ -66,15 +68,11 @@
     mobileNavToggleBtn = document.querySelector('.mobile-nav-toggle');
     
     if (mobileNavToggleBtn) {
-      // Add both click and touchstart for mobile
-      mobileNavToggleBtn.addEventListener('click', toggleMobileNav, true);
-      mobileNavToggleBtn.addEventListener('touchstart', function(e) {
+      mobileNavToggleBtn.addEventListener('click', function(e) {
         e.preventDefault();
+        e.stopPropagation();
         toggleMobileNav(e);
-      }, {passive: false, capture: true});
-      console.log('Mobile nav toggle initialized');
-    } else {
-      console.log('Mobile nav toggle button not found');
+      });
     }
   }
   
@@ -86,23 +84,20 @@
   }
 
   /**
-   * Hide mobile nav when clicking nav links
+   * Close mobile nav when clicking nav links
    */
   function setupNavLinks() {
     document.querySelectorAll('#navmenu a').forEach(link => {
-      // Add click handler to close menu after navigation
       link.addEventListener('click', function(e) {
-        // Allow navigation to happen, then close menu
+        // Close menu after a short delay to allow navigation
         setTimeout(() => {
-          if (document.body.classList.contains('mobile-nav-active')) {
-            closeMobileNav();
-          }
-        }, 200);
-      }, true);
+          closeMobileNav();
+        }, 100);
+      });
     });
   }
   
-  // Setup nav links after DOM is ready
+  // Setup nav links
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', setupNavLinks);
   } else {
@@ -110,24 +105,24 @@
   }
   
   /**
-   * Close mobile nav when clicking overlay or outside menu
+   * Close mobile nav when clicking backdrop (outside menu)
    */
   document.addEventListener('click', function(e) {
-    if (document.body.classList.contains('mobile-nav-active')) {
-      const navmenu = document.querySelector('.navmenu');
-      const toggle = document.querySelector('.mobile-nav-toggle');
-      
-      // Check if click is on toggle button
-      if (toggle && (toggle === e.target || toggle.contains(e.target))) {
-        return; // Let toggle handler manage it
-      }
-      
-      // Close if clicking outside the menu
-      if (navmenu && !navmenu.contains(e.target)) {
-        closeMobileNav();
-      }
+    if (!document.body.classList.contains('mobile-nav-active')) return;
+    
+    const navmenu = document.querySelector('.navmenu');
+    const toggle = document.querySelector('.mobile-nav-toggle');
+    
+    // Don't close if clicking the toggle button (it handles its own toggle)
+    if (toggle && (toggle === e.target || toggle.contains(e.target))) {
+      return;
     }
-  }, true);
+    
+    // Close if clicking outside the menu (backdrop click)
+    if (navmenu && !navmenu.contains(e.target)) {
+      closeMobileNav();
+    }
+  });
 
   /**
    * Toggle mobile nav dropdowns
