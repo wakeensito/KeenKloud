@@ -25,22 +25,45 @@
   /**
    * Mobile nav toggle
    */
-  const mobileNavToggleBtn = document.querySelector('.mobile-nav-toggle');
-
-  function mobileNavToogle(e) {
-    if (e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-    document.querySelector('body').classList.toggle('mobile-nav-active');
+  let mobileNavToggleBtn;
+  
+  function initMobileNav() {
+    mobileNavToggleBtn = document.querySelector('.mobile-nav-toggle');
+    
     if (mobileNavToggleBtn) {
-      mobileNavToggleBtn.classList.toggle('bi-list');
-      mobileNavToggleBtn.classList.toggle('bi-x');
+      function mobileNavToogle(e) {
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        const body = document.querySelector('body');
+        const isActive = body.classList.contains('mobile-nav-active');
+        
+        body.classList.toggle('mobile-nav-active');
+        
+        if (mobileNavToggleBtn) {
+          if (isActive) {
+            mobileNavToggleBtn.classList.remove('bi-x');
+            mobileNavToggleBtn.classList.add('bi-list');
+          } else {
+            mobileNavToggleBtn.classList.remove('bi-list');
+            mobileNavToggleBtn.classList.add('bi-x');
+          }
+        }
+      }
+      
+      mobileNavToggleBtn.addEventListener('click', mobileNavToogle);
+      console.log('Mobile nav toggle initialized');
+    } else {
+      console.log('Mobile nav toggle button not found');
     }
   }
   
-  if (mobileNavToggleBtn) {
-    mobileNavToggleBtn.addEventListener('click', mobileNavToogle);
+  // Initialize on DOM ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMobileNav);
+  } else {
+    initMobileNav();
   }
 
   /**
