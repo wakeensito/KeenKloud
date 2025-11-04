@@ -379,7 +379,7 @@ h6 {
 
   .navmenu a,
   .navmenu a:focus {
-    color: var(--nav-dropdown-color);
+    color: #ffffff !important;
     padding: 10px 20px;
     font-family: var(--nav-font);
     font-size: 17px;
@@ -389,6 +389,15 @@ h6 {
     justify-content: space-between;
     white-space: nowrap;
     transition: 0.3s;
+  }
+  
+  .navmenu a:hover,
+  .navmenu a:focus {
+    color: #007bff !important;
+  }
+  
+  .navmenu a.active {
+    color: #007bff !important;
   }
 
   .navmenu a i,
@@ -461,25 +470,27 @@ h6 {
   .mobile-nav-active .navmenu {
     position: fixed !important;
     top: 0 !important;
-    left: 0 !important;
     right: 0 !important;
     bottom: 0 !important;
-    width: 100% !important;
+    width: 280px !important;
+    max-width: 85vw !important;
     height: 100vh !important;
     overflow-y: auto !important;
-    background: rgba(33, 37, 41, 0.98) !important;
-    transition: all 0.3s ease !important;
+    background: rgba(0, 0, 0, 0.98) !important;
+    transition: transform 0.3s ease !important;
     backdrop-filter: blur(10px);
     z-index: 99999 !important;
     padding: 0 !important;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.5) !important;
   }
   
   .mobile-nav-active .navmenu .mobile-nav-toggle {
     pointer-events: auto !important;
     z-index: 999999 !important;
-    position: fixed !important;
+    position: absolute !important;
     top: 20px !important;
     right: 20px !important;
+    color: #ffffff !important;
   }
 
   .mobile-nav-active .navmenu>ul {
@@ -511,6 +522,19 @@ h6 {
   
   .mobile-nav-active .navmenu>ul>li:last-child {
     border-bottom: none !important;
+  }
+  
+  /* Add overlay background behind menu */
+  body.mobile-nav-active::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99998;
+    backdrop-filter: blur(2px);
   }
   
   /* Ensure mobile nav overlay is above everything */
