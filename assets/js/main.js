@@ -26,37 +26,56 @@
    * Mobile nav toggle
    */
   let mobileNavToggleBtn;
+  let mobileNavBackdrop;
+  let mobileNavActive = false;
   
   function initMobileNav() {
     mobileNavToggleBtn = document.querySelector('.mobile-nav-toggle');
+    mobileNavBackdrop = document.querySelector('.mobile-nav-backdrop');
+    
+    function toggleMobileNav() {
+      mobileNavActive = !mobileNavActive;
+      const body = document.querySelector('body');
+      const icon = mobileNavToggleBtn.querySelector('i');
+      
+      if (mobileNavActive) {
+        body.classList.add('mobile-nav-active');
+        icon.classList.remove('bi-list');
+        icon.classList.add('bi-x');
+      } else {
+        body.classList.remove('mobile-nav-active');
+        icon.classList.remove('bi-x');
+        icon.classList.add('bi-list');
+      }
+    }
+    
+    function closeMobileNav() {
+      if (mobileNavActive) {
+        toggleMobileNav();
+      }
+    }
     
     if (mobileNavToggleBtn) {
-      function mobileNavToogle(e) {
-        if (e) {
-          e.preventDefault();
-          e.stopPropagation();
-        }
-        const body = document.querySelector('body');
-        const isActive = body.classList.contains('mobile-nav-active');
-        
-        body.classList.toggle('mobile-nav-active');
-        
-        if (mobileNavToggleBtn) {
-          if (isActive) {
-            mobileNavToggleBtn.classList.remove('bi-x');
-            mobileNavToggleBtn.classList.add('bi-list');
-          } else {
-            mobileNavToggleBtn.classList.remove('bi-list');
-            mobileNavToggleBtn.classList.add('bi-x');
-          }
-        }
-      }
-      
-      mobileNavToggleBtn.addEventListener('click', mobileNavToogle);
-      console.log('Mobile nav toggle initialized');
-    } else {
-      console.log('Mobile nav toggle button not found');
+      mobileNavToggleBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleMobileNav();
+      });
     }
+    
+    // Close menu when clicking backdrop
+    if (mobileNavBackdrop) {
+      mobileNavBackdrop.addEventListener('click', closeMobileNav);
+    }
+    
+    // Close menu when clicking nav links
+    document.querySelectorAll('#navmenu a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (mobileNavActive) {
+          closeMobileNav();
+        }
+      });
+    });
   }
   
   // Initialize on DOM ready
