@@ -492,19 +492,28 @@ h6 {
     right: 20px !important;
     color: #ffffff !important;
     cursor: pointer !important;
-    font-size: 28px !important;
-    background: rgba(0, 0, 0, 0.3) !important;
-    padding: 8px !important;
+    font-size: 32px !important;
+    font-weight: bold !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+    padding: 10px !important;
     border-radius: 8px !important;
-    width: 40px !important;
-    height: 40px !important;
+    width: 44px !important;
+    height: 44px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
   }
   
   .mobile-nav-active .navmenu .mobile-nav-toggle:hover {
-    background: rgba(255, 255, 255, 0.1) !important;
+    background: rgba(255, 255, 255, 0.3) !important;
+    border-color: rgba(255, 255, 255, 0.5) !important;
+  }
+  
+  .mobile-nav-active .navmenu .mobile-nav-toggle i {
+    color: #ffffff !important;
+    font-weight: bold !important;
   }
 
   .mobile-nav-active .navmenu>ul {
@@ -550,7 +559,7 @@ h6 {
     bottom: 0;
     background: rgba(0, 0, 0, 0.5);
     z-index: 99998;
-    backdrop-filter: blur(2px);
+    backdrop-filter: none !important;
   }
   
   /* Ensure mobile nav overlay is above everything */
@@ -558,6 +567,8 @@ h6 {
   body.mobile-nav-active .hero img,
   body.mobile-nav-active .main > section {
     z-index: 1;
+    filter: none !important;
+    -webkit-filter: none !important;
   }
 }
 
