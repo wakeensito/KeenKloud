@@ -895,6 +895,25 @@ section,
   font-style: normal;
 }
 
+@media (max-width: 768px) {
+  .about .progress .skill {
+    font-size: 12px;
+    line-height: 1.4;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  .about .progress .skill span {
+    display: inline-block;
+    max-width: calc(100% - 50px);
+  }
+  
+  .about .progress {
+    height: auto;
+    min-height: 36px;
+  }
+}
+
 .about .progress-bar-wrap {
   background: color-mix(in srgb, var(--default-color), transparent 90%);
   height: 10px;
