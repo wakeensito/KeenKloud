@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Quick cache clear for KeenKloud
+# Usage: ./clear-cache
+
+cd "$(dirname "$0")"
+./invalidate-cache.sh
+

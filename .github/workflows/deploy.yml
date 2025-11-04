@@ -39,5 +39,25 @@ jobs:
             --exclude ".github/*" \
             --exclude ".DS_Store"
 
+      - name: Invoke Lambda function to update market data
+        run: |
+          aws lambda invoke \
+            --function-name MarketUpdater \
+            --region us-east-1 \
+            --payload '{}' \
+            response.json
+          
+          # Check if Lambda executed successfully
+          if [ $? -eq 0 ]; then
+            echo "Lambda function invoked successfully"
+            cat response.json
+          else
+            echo "Lambda invocation failed"
+            exit 1
+          fi
+
+      - name: Wait for Lambda to complete
+        run: sleep 5
+
       - name: Invalidate CloudFront cache
         run: aws cloudfront create-invalidation --distribution-id E3LVF9216UA9W9 --paths "/*"

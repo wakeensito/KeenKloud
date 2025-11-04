@@ -156,10 +156,13 @@ h6 {
   --default-color: #ffffff;
   --heading-color: #ffffff;
   color: var(--default-color);
-  background-color: var(--background-color);
+  background-color: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   padding: 20px 0;
-  transition: all 0.5s;
+  transition: all 0.5s ease;
   z-index: 997;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .header .logo {
@@ -175,11 +178,28 @@ h6 {
   font-size: 30px;
   margin: 0;
   font-weight: 700;
-  color: var(--heading-color);
+  background: linear-gradient(135deg, #ffffff 0%, #007bff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: all 0.3s ease;
+  letter-spacing: -0.5px;
+  position: relative;
+}
+
+.header .logo:hover h1 {
+  background: linear-gradient(135deg, #007bff 0%, #00d4ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transform: translateX(2px);
+  filter: drop-shadow(0 0 8px rgba(0, 123, 255, 0.4));
 }
 
 .scrolled .header {
-  box-shadow: 0px 0 18px rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.98);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 1px rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /*--------------------------------------------------------------
