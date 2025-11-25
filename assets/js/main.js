@@ -651,7 +651,7 @@
       }
     });
 
-    // Make portfolio items clickable
+    // Make portfolio items clickable (desktop and mobile)
     const portfolioItems = document.querySelectorAll('.portfolio-item[data-project-id]');
     if (portfolioItems.length === 0) {
       console.warn('No portfolio items with data-project-id found');
@@ -659,13 +659,44 @@
 
     portfolioItems.forEach(item => {
       item.style.cursor = 'pointer';
-      item.addEventListener('click', (e) => {
+      
+      // Handle click/tap events
+      function handlePortfolioClick(e) {
         // Don't open if clicking on a link inside
         if (e.target.closest('a')) return;
         const projectId = item.getAttribute('data-project-id');
         if (projectId) {
           console.log('Opening modal for project:', projectId);
           openModal(projectId);
+        }
+      }
+
+      // Desktop: click event
+      item.addEventListener('click', handlePortfolioClick);
+      
+      // Mobile: touch events
+      let touchStartTime = 0;
+      let touchStartX = 0;
+      let touchStartY = 0;
+      
+      item.addEventListener('touchstart', (e) => {
+        touchStartTime = Date.now();
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+      }, { passive: true });
+      
+      item.addEventListener('touchend', (e) => {
+        const touchEndTime = Date.now();
+        const touchDuration = touchEndTime - touchStartTime;
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
+        const touchDistanceX = Math.abs(touchEndX - touchStartX);
+        const touchDistanceY = Math.abs(touchEndY - touchStartY);
+        
+        // Only trigger if it's a tap (not a swipe or long press)
+        if (touchDuration < 300 && touchDistanceX < 10 && touchDistanceY < 10) {
+          e.preventDefault();
+          handlePortfolioClick(e);
         }
       });
     });
