@@ -121,7 +121,7 @@
     // Close if clicking outside the menu (backdrop click)
     if (navmenu && !navmenu.contains(e.target)) {
       closeMobileNav();
-    }
+      }
   });
 
   /**

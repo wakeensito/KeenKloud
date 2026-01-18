@@ -18,7 +18,7 @@
 }
 
 /* Global Colors - The following color variables are used throughout the website. Updating them here will change the color scheme of the entire website */
-:root {
+:root { 
   --background-color: #ffffff;
   /* Background color for the entire website, including individual sections */
   --default-color: #4e4e4e;
